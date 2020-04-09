@@ -1,0 +1,6 @@
+framework module YLChnAdSDK {
+  umbrella header "YLChnAdSDK.h"
+
+  export *
+  module * { export * }
+}
