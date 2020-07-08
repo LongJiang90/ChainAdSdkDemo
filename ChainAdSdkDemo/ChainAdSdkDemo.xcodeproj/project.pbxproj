@@ -48,6 +48,7 @@
 		1567FDB4243EFE3A00047312 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1567FDC0243EFE7D00047312 /* BUAdSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = BUAdSDK.bundle; path = YLChnAdSDK.framework/BUAdSDK.bundle; sourceTree = "<group>"; };
 		1567FDC2243F03A300047312 /* YLChnAdSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YLChnAdSDK.framework; sourceTree = "<group>"; };
+		1568835524400FD6008FBF4B /* ChainAdSdkDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChainAdSdkDemo.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +82,7 @@
 		1567FDA1243EFE3800047312 /* ChainAdSdkDemo */ = {
 			isa = PBXGroup;
 			children = (
+				1568835524400FD6008FBF4B /* ChainAdSdkDemo.entitlements */,
 				1567FDA2243EFE3800047312 /* AppDelegate.h */,
 				1567FDA3243EFE3800047312 /* AppDelegate.m */,
 				1567FDA5243EFE3800047312 /* SceneDelegate.h */,
@@ -313,8 +315,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ChainAdSdkDemo/ChainAdSdkDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UL35MHK385;
+				DEVELOPMENT_TEAM = DJY6A9FX2H;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -325,7 +328,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.youloft.ChainAdSdkDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youloft.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -335,8 +338,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ChainAdSdkDemo/ChainAdSdkDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UL35MHK385;
+				DEVELOPMENT_TEAM = DJY6A9FX2H;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -347,7 +351,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.youloft.ChainAdSdkDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youloft.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

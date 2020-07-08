@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import <YLChnAdSDK/YLChnAdSDK.h>
+#import <AuthenticationServices/AuthenticationServices.h>
 
 #define BundleId [NSBundle mainBundle].bundleIdentifier
 #define kTabBarHeight   50
@@ -36,7 +37,7 @@
 
 static NSString *defKey = @"normal_reward_video";
 
-@interface ViewController ()<AdManagerDelegate, ApplePayDelegate>
+@interface ViewController ()<AdManagerDelegate, ApplePayDelegate, ASAuthorizationControllerDelegate,ASAuthorizationControllerPresentationContextProviding>
 
 @end
 
@@ -66,6 +67,8 @@ static NSString *defKey = @"normal_reward_video";
     [[ApplePayAgent shareManager] setDelegate:self];
     
     [self addBtnsByArr:@[@"添加Banner广告", @"隐藏Banner广告", @"显示插屏广告", @"显示缓存视频", @"测试统计", @"发起内购"]];
+    
+    [self configUI];
     
 }
 
@@ -203,6 +206,68 @@ static NSString *defKey = @"normal_reward_video";
         [ApplePayAgent shareManager].delegate = self;
     }
     [[ApplePayAgent shareManager] payParams:productId];
+}
+
+-(void)configUI{
+    if (@available(iOS 13.0, *)) {
+        ASAuthorizationAppleIDButton *authorizationButton = [[ASAuthorizationAppleIDButton alloc]init];
+        [authorizationButton addTarget:self action:@selector(click) forControlEvents:(UIControlEventTouchUpInside)];
+//        authorizationButton.frame = CGRectMake(0, self.view.frame.size.height-80, 100, 44);
+        authorizationButton.center = CGPointMake(self.view.center.x, self.view.center.y+100);
+        [self.view addSubview:authorizationButton];
+    } else {
+        // Fallback on earlier versions
+    }
+}
+
+-(void)click API_AVAILABLE(ios(13.0)){
+    ASAuthorizationAppleIDProvider *appleIDProvider = [[ASAuthorizationAppleIDProvider alloc]init];
+    ASAuthorizationAppleIDRequest *request = [appleIDProvider createRequest];
+    request.requestedScopes = @[ASAuthorizationScopeFullName,ASAuthorizationScopeEmail];
+    ASAuthorizationController *auth = [[ASAuthorizationController alloc]initWithAuthorizationRequests:@[request]];
+    auth.delegate = self;
+//    auth.presentationContextProvider = self;
+    [auth performRequests];
+}
+
+///代理主要用于展示在哪里
+//-(ASPresentationAnchor)presentationAnchorForAuthorizationController:(ASAuthorizationController *)controller API_AVAILABLE(ios(13.0)){
+//    return self.view.window;
+//}
+
+-(void)authorizationController:(ASAuthorizationController *)controller didCompleteWithAuthorization:(ASAuthorization *)authorization API_AVAILABLE(ios(13.0)){
+        if([authorization.credential isKindOfClass:[ASAuthorizationAppleIDCredential class]]){
+            ASAuthorizationAppleIDCredential *credential = authorization.credential;
+            
+            NSString *state = credential.state;
+            NSString *userID = credential.user;
+            NSPersonNameComponents *fullName = credential.fullName;
+            NSString *email = credential.email;
+            NSString *authorizationCode = [[NSString alloc] initWithData:credential.authorizationCode encoding:NSUTF8StringEncoding]; // refresh token
+            NSString *identityToken = [[NSString alloc] initWithData:credential.identityToken encoding:NSUTF8StringEncoding]; // access token
+            ASUserDetectionStatus realUserStatus = credential.realUserStatus;
+            
+            NSLog(@"state: %@", state);
+            NSLog(@"userID: %@", userID);
+            NSLog(@"fullName: %@", fullName);
+            NSLog(@"email: %@", email);
+            NSLog(@"authorizationCode: %@", authorizationCode);
+            NSLog(@"identityToken: %@", identityToken);
+            NSLog(@"realUserStatus: %@", @(realUserStatus));
+        }else if ([authorization.credential isKindOfClass:[ASPasswordCredential class]]){
+            
+            //// Sign in using an existing iCloud Keychain credential.
+            ASPasswordCredential *pass = authorization.credential;
+            NSString *username = pass.user;
+            NSString *passw = pass.password;
+            
+        }
+    
+}
+
+///回调失败
+-(void)authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error API_AVAILABLE(ios(13.0)){
+    NSLog(@"%@",error);
 }
 
 #pragma mark - 回调函数
